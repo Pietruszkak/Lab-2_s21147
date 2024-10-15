@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  testing: #change name
+  data-processing: 
     runs-on: ubuntu-latest
     
     steps:
@@ -23,10 +23,11 @@ jobs:
       - name: Clone private repository
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: git clone https://$PAT_TOKEN@github.com/PJATK-ASI-2024/Lab2---Obr-bka-danych.git
+        run: |
+          git clone https://$PAT_TOKEN@github.com/PJATK-ASI-2024/Lab2---Obr-bka-danych.git
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install data generation dependencies
+        run: pip install -r Lab2---Obr-bka-danych/requirements.txt
 
       - name: run data generation
         run: python Lab2---Obr-bka-danych/generator_danych.py -s 21147
