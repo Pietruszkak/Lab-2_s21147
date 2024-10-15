@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  train-model:
+  testing: #change name
     runs-on: ubuntu-latest
     
     steps:
@@ -19,12 +19,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-  
+
+      - name: Clone private repository
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: git clone https://$PAT_TOKEN@github.com/PJATK-ASI-2024/Lab2---Obr-bka-danych.git
+
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: run data generation
+        run: python Lab2---Obr-bka-danych/generator_danych.py -s 21147
   
-      - name: Run model training
-        run: python s21147.py
-  
-      - name: Display accuracy
-        run: cat accuracy.txt
+      - name: cat data
+        run: cat data_student_21147.csv

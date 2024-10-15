@@ -1,1 +1,0 @@
-Model trained with accuracy: 100.00%
