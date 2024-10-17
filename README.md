@@ -1,3 +1,5 @@
+### Google Sheets
+#### https://docs.google.com/spreadsheets/d/1Zt-Vqoca_s2mxG-dJUQurMMDWrB5byrd2ygEPLuTTFQ/edit?gid=0#gid=0
 # Lab2---Obr-bka-danych
 
 ### Wymogi do zadania - nie tworzycie nowego repo tylko zmieniacie nazwe z Lab1 na Lab2 a treść z zadania jeden przenosie na brancha o nazwie zadania:

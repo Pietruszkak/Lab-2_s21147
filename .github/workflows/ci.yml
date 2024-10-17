@@ -31,6 +31,18 @@ jobs:
 
       - name: run data generation
         run: python Lab2---Obr-bka-danych/generator_danych.py -s 21147
-  
-      - name: cat data
-        run: cat data_student_21147.csv
+
+      - name: install data processing dependencies
+        run: pip install -r requirements.txt
+
+      - name: run python script
+        env: 
+          GOOGLE_SHEETS_CREDS: ${{ secrets.GOOGLE_SHEETS_CREDS }}
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+        run: python data_processing.py
+
+      - name: read report.txt
+        run: cat report.txt
+
+      - name: read log.txt
+        run: cat log.txt

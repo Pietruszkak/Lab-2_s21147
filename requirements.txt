@@ -1,1 +1,4 @@
 pandas
+gspread
+oauth2client
+logging

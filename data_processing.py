@@ -1,5 +1,18 @@
 import pandas as pd
 import logging
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import os
+import json
+
+#SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
+creds_json  = os.environ['GOOGLE_SHEETS_CREDS']
+creds_dict = json.loads(creds_json)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict)#?
+client = gspread.authorize(creds)
+spreadsheet = client.open_by_key(os.environ['SPREADSHEET_ID'])#https://docs.google.com/spreadsheets/d/1Zt-Vqoca_s2mxG-dJUQurMMDWrB5byrd2ygEPLuTTFQ/edit?gid=0#gid=0
+worksheet = spreadsheet.get_worksheet(0)
+worksheet.clear()
 
 logging.basicConfig(
     filename="log.txt",
@@ -21,6 +34,10 @@ logger.addHandler(console_handler)
 logging.info("Reading data.\n")
 df=pd.read_csv('data_student_21147.csv')
 origin_df_len=len(df)
+
+logging.info("Writing Uncleaned Data to Google Sheets.\n")
+df_worksheet=df.fillna('')
+worksheet.update([df_worksheet.columns.values.tolist()] + df_worksheet.values.tolist())
 
 logging.info("Deleting rows with more than half values missing.")
 threshold = len(df.columns) / 2
@@ -93,5 +110,13 @@ df['Cel Podróży'] = df['Cel Podróży'].astype(str)
 
 logging.info("Data processing ended.")
 
+
+logging.info("Writing report.txt.")
 with open('report.txt', 'w') as file:
     file.write(f"Deleted rows: {(rows_deleted+times_missing_len)/origin_df_len*100}%\nFilled values: {(wiek_filled+zarobki_filled+poczatek_filled+koncowy_filled+plec_filled+wyksztalcenie_filled+cel_filled)/origin_df_len*100}%")
+
+logging.info("Writing Cleaned Data to Google Sheets.")
+worksheet_cleaned = spreadsheet.get_worksheet(1)
+worksheet_cleaned.clear()
+df_worksheet = df.astype(str)
+worksheet_cleaned.update([df_worksheet.columns.values.tolist()] + df_worksheet.values.tolist())
