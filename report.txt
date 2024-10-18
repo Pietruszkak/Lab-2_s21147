@@ -1,2 +1,0 @@
-Deleted rows: 1.9%
-Filled values: 6.4%
